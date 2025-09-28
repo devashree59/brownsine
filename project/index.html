@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wedding Invitation</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Great+Vibes&family=Playfair+Display&family=Grenze&display=swap" rel="stylesheet">
+  <style>
+    /* ========== Global Reset & Base ========== */
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        font-family: Arial, sans-serif;
+        background-color: #1a1a1a;
+    }
+
+    /* Remove default margins inside cards */
+    .invitation-card h1,
+    .invitation-card h2,
+    .invitation-card h6,
+    .invitation-card p {
+        margin: 0;
+        padding: 0;
+    }
+
+    /* ========== Card Container ========== */
+    .invitation-wrapper {
+        height: 100vh;
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        position: relative;
+    }
+
+    .invitation-container {
+        scroll-snap-align: center;
+        flex: 0 0 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* ========== Card ========== */
+    .invitation-card {
+        background-color: #f7f3f0;
+        height: 100%;
+        width: 100%;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        box-shadow: none;
+    }
+
+    /* Background image layer */
+    .invitation-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        z-index: 1;
+        background-color: #ffffff;
+    }
+
+    /* first-card background */
+    .first-card::before {
+        background-image: url('image(1).jpg');
+    }
+
+    /* content above ::before */
+    .invitation-content {
+        position: relative;
+        z-index: 2;
+        color: #4c4c4c;
+        font-family: 'Times New Roman', serif;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
+    }
+
+    /* Cross icon */
+    .cross-icon {
+        font-size: 3rem;
+        color: #6a6a6a;
+        margin-bottom: 1rem;
+    }
+
+    /* Texts */
+    .invitation-message {
+        font-family: 'Grenze';
+        font-size: 0.9rem;
+        color: #8c8c8c;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        line-height: 1.4;
+    }
+
+    .couple-names {
+        font-family: 'Great Vibes';
+        font-size: 2.5rem;
+        line-height: 1.2;
+        margin-bottom: 0.5rem;
+        text-align: center;
+        color: #333;
+    }
+
+    /* Details */
+    .invitation-details {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .invitation-details .detail-label {
+        font-size: 0.8rem;
+        color: #8c8c8c;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 0.2rem;
+        text-align: center;
+    }
+
+    .invitation-details .detail-text {
+        font-family: 'Grenze';
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #333;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Countdown */
+    .countdown {
+        margin: 1.5rem 0;
+    }
+
+    .countdown-number {
+        font-family: 'Grenze';
+        font-size: 2rem;
+        font-weight: 300;
+        letter-spacing: 1px;
+        color: #333;
+        text-align: center;
+    }
+
+    .to-go-text {
+        font-size: 1rem;
+        color: #8c8c8c;
+    }
+
+    /* ========== Second Card ========== */
+    .invitation-card.second-card {
+        padding: 0;
+        height: 100%;
+        flex-direction: column;
+        justify-content: space-between;
+        background-color: #f7f3f0;
+    }
+
+    .invitation-card.second-card::before {
+        display: none;
+    }
+
+    .couple-image-section {
+        width: 100%;
+        overflow: hidden;
+        flex-shrink: 0;
+        height: 60%; /* Equal height for all cards */
+    }
+
+    .couple-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-bottom-left-radius: 25px;
+        border-bottom-right-radius: 25px;
+    }
+
+    /* 🔑 FIXED: Equal dimensions for all cards */
+    .second-card .invitation-content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 1rem 1rem 2rem;
+        height: 40%; /* Equal height for all cards */
+        gap: 0.5rem;
+    }
+
+    .quote-text {
+        font-family: 'Grenze';
+        font-size: 1.2rem;
+        color: #333;
+        line-height: 1.4;
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .get-direction-btn {
+        background-color: #6a6a6a;
+        border: none;
+        color: #fff;
+        padding: 0.8rem 2.5rem;
+        border-radius: 30px;
+        font-family: 'Grenze';
+        font-size: 1rem;
+        letter-spacing: 1px;
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+        margin-top: 1rem;
+    }
+
+    .get-direction-btn:hover {
+        background-color: #555;
+        color: #fff;
+    }
+
+    /* ========== Third Card ========== */
+    .parents-details-card::before {
+        background-image: url('image(1).jpg');
+    }
+
+    /* 🔑 FIXED: Equal dimensions for third card */
+    .parents-details-card .invitation-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem 1rem;
+        gap: 2rem;
+        height: 100%; /* Equal height for all cards */
+    }
+
+    .parent-section {
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .relation-label {
+        font-family: 'Josefin Sans', serif;
+        font-size: 1.2rem;
+        color: #6a6a6a;
+        margin-bottom: 0.5rem;
+    }
+
+    .parent-names {
+        font-family: 'Josefin Sans';
+        font-size: 1.6rem;
+        font-weight: bold;
+        line-height: 1.2;
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+
+    .parent-address {
+        font-family: 'Josefin Sans', serif;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #555;
+    }
+
+    .divider-image img {
+        max-width: 80px;
+        margin: 0 auto;
+        display: block;
+    }
+
+    /* ========== Page Indicator ========== */
+    .page-indicator {
+        position: fixed;
+        bottom: 20px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        z-index: 1000;
+        pointer-events: none;
+    }
+
+    .page-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.5);
+        margin: 0 5px;
+        transition: all 0.3s ease;
+    }
+
+    .page-dot.active {
+        background-color: rgba(255, 255, 255, 0.9);
+        transform: scale(1.3);
+    }
+
+    /* ========== Navigation Arrows ========== */
+    .nav-arrow {
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.3);
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+        color: white;
+        cursor: pointer;
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.3s ease;
+    }
+
+    .nav-arrow:hover {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .left-arrow {
+        left: 15px;
+    }
+
+    .right-arrow {
+        right: 15px;
+    }
+
+    /* ========== Responsive ========== */
+    @media (max-width: 576px) {
+        .couple-names { font-size: 2rem; }
+        .countdown-number { font-size: 1.5rem; }
+        .invitation-content { padding: 1rem; }
+        
+        .nav-arrow {
+            width: 35px;
+            height: 35px;
+            font-size: 18px;
+        }
+        
+        .left-arrow {
+            left: 10px;
+        }
+        
+        .right-arrow {
+            right: 10px;
+        }
+        
+        /* Mobile adjustments for equal dimensions */
+        .couple-image-section {
+            height: 55%; /* Equal height on mobile */
+        }
+        
+        .second-card .invitation-content {
+            height: 45%; /* Equal height on mobile */
+            padding: 0.5rem 1rem 1.5rem;
+        }
+        
+        .parents-details-card .invitation-content {
+            height: 100%; /* Equal height on mobile */
+        }
+    }
+
+    @media (min-width: 769px) {
+        .invitation-wrapper {
+            height: auto;
+            overflow-y: visible;
+            scroll-snap-type: none;
+        }
+
+        .invitation-container {
+            height: auto;
+            padding: 40px 0;
+        }
+
+        .invitation-card {
+            max-width: 400px;
+            height: auto;
+            min-height: 600px; /* Equal minimum height for all cards */
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            display: block;
+            padding: 0;
+        }
+
+        .invitation-card::before {
+            background-size: cover;
+            border-radius: 20px;
+        }
+
+        .couple-image {
+            height: 300px; /* Equal height for all cards on desktop */
+            object-fit: cover;
+            border-radius: 20px 20px 0 0;
+        }
+        
+        .page-indicator {
+            bottom: 30px;
+        }
+        
+        .second-card .invitation-content {
+            padding: 1.5rem 2rem 2rem;
+        }
+        
+        /* Desktop adjustments for equal dimensions */
+        .couple-image-section {
+            height: 300px; /* Fixed height for desktop */
+        }
+        
+        .second-card .invitation-content {
+            height: calc(100% - 300px); /* Calculate remaining height */
+            min-height: 300px; /* Equal minimum height */
+        }
+        
+        .parents-details-card .invitation-content {
+            height: 100%; /* Full height for third card */
+            min-height: 600px; /* Equal minimum height */
+        }
+    }
+  </style>
+</head>
+<body>
+
+<div class="invitation-wrapper">
+  <!-- First Card -->
+  <div class="invitation-container">
+    <div class="invitation-card first-card" data-page="1">
+      <div class="invitation-content text-center">
+        <div class="cross-icon">
+          <img src="img/e6155ab3bd3e874fd3cffc2798ff7dfb-removebg-preview.png"
+               alt="Cross Icon" style="width:90px;height:90px;">
+        </div>
+        <h6 class="invitation-message">PLEASE JOIN US IN THE<br> CELEBRATION OF OUR WEDDING</h6>
+        <h1 class="couple-names">Sandra Maria<br>Augustine</h1>
+        <h1 class="couple-names">&</h1>
+        <h1 class="couple-names">Justin Thomas</h1>
+
+        <div class="invitation-details mt-3">
+          <div class="details-item">
+            <p class="detail-label">When</p>
+            <p class="detail-text">Monday, November 24</p>
+          </div>
+          <div class="countdown my-4">
+            <h2 class="countdown-number">127 DAYS <span class="to-go-text">TO GO</span></h2>
+          </div>
+          <div class="details-item">
+            <p class="detail-label">Where</p>
+            <p class="detail-text">St. Sebastian Church, Nechumpadamchol</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Second Card -->
+  <div class="invitation-container">
+    <div class="invitation-card second-card" data-page="2">
+      <div class="couple-image-section">
+        <img src="WhatsApp Image 2025-09-28 at 11.19.14 AM.jpeg" alt="Wedding Couple" class="img-fluid couple-image">
+      </div>
+      <div class="invitation-content text-center py-5">
+        <p class="quote-text px-4">
+          "With hearts full of love, we invite you to witness the beginning of our forever.
+          Join us as we say 'I Do' and celebrate this beautiful journey together."
+        </p>
+        <a href="https://maps.google.com/?q=St.+Sebastian+Church,+Nechumpadamchol"
+           target="_blank" class="btn btn-primary mt-4 get-direction-btn">
+          Get Direction
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Third Card -->
+  <div class="invitation-container">
+    <div class="invitation-card parents-details-card" data-page="3">
+      <div class="invitation-content text-center py-5">
+        <div class="parent-section">
+          <p class="relation-label">D/o</p>
+          <p class="parent-names">Jolly Joseph &<br>Silviya Jolly</p>
+          <p class="parent-address">
+            Vellakkadapil House<br>Poolakutty p.o, Kannur<br>670650
+          </p>
+        </div>
+
+        <div class="divider-image my-5">
+          <img src="img/5jpg.jpg" alt="Floral Divider" class="img-fluid" style="height:60px;">
+        </div>
+
+        <div class="parent-section">
+          <p class="relation-label">S/o</p>
+          <p class="parent-names">Erathara Vareed Thomas &<br>Stella Thomas</p>
+          <p class="parent-address">
+            Erathara House<br>Malayattoor p.o, Chammini<br>685587
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Navigation Arrows -->
+<button class="nav-arrow left-arrow" id="prevBtn">&#10094;</button>
+<button class="nav-arrow right-arrow" id="nextBtn">&#10095;</button>
+
+<!-- Page Indicator -->
+<div class="page-indicator">
+  <div class="page-dot active" data-page="1"></div>
+  <div class="page-dot" data-page="2"></div>
+  <div class="page-dot" data-page="3"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Update page indicator based on scroll position
+  const wrapper = document.querySelector('.invitation-wrapper');
+  const dots = document.querySelectorAll('.page-dot');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  
+  // Function to update active dot based on scroll position
+  function updatePageIndicator() {
+    const scrollLeft = wrapper.scrollLeft;
+    const cardWidth = wrapper.clientWidth;
+    const currentPage = Math.round(scrollLeft / cardWidth);
+    
+    // Update active dot
+    dots.forEach((dot, index) => {
+      dot.classList.remove('active');
+      if (index === currentPage) {
+        dot.classList.add('active');
+      }
+    });
+    
+    // Show/hide navigation arrows based on current page
+    prevBtn.style.display = currentPage === 0 ? 'none' : 'block';
+    nextBtn.style.display = currentPage === dots.length - 1 ? 'none' : 'block';
+  }
+  
+  // Listen for scroll events
+  wrapper.addEventListener('scroll', updatePageIndicator);
+  
+  // Navigation arrow functionality
+  prevBtn.addEventListener('click', () => {
+    const cardWidth = wrapper.clientWidth;
+    const currentScroll = wrapper.scrollLeft;
+    wrapper.scrollTo({
+      left: currentScroll - cardWidth,
+      behavior: 'smooth'
+    });
+  });
+  
+  nextBtn.addEventListener('click', () => {
+    const cardWidth = wrapper.clientWidth;
+    const currentScroll = wrapper.scrollLeft;
+    wrapper.scrollTo({
+      left: currentScroll + cardWidth,
+      behavior: 'smooth'
+    });
+  });
+  
+  // Add touch/swipe support for mobile
+  let startX = 0;
+  let isScrolling = false;
+  
+  wrapper.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+    isScrolling = true;
+  });
+  
+  wrapper.addEventListener('touchmove', (e) => {
+    if (!isScrolling) return;
+    // Prevent default to improve scrolling behavior on iOS
+    e.preventDefault();
+  });
+  
+  wrapper.addEventListener('touchend', (e) => {
+    if (!isScrolling) return;
+    
+    const endX = e.changedTouches[0].clientX;
+    const diffX = startX - endX;
+    const cardWidth = wrapper.clientWidth;
+    
+    // If swipe distance is significant, change page
+    if (Math.abs(diffX) > 50) {
+      if (diffX > 0) {
+        // Swipe left - next page
+        wrapper.scrollBy({
+          left: cardWidth,
+          behavior: 'smooth'
+        });
+      } else {
+        // Swipe right - previous page
+        wrapper.scrollBy({
+          left: -cardWidth,
+          behavior: 'smooth'
+        });
+      }
+    }
+    
+    isScrolling = false;
+  });
+  
+  // Initialize on page load
+  updatePageIndicator();
+  
+  // Hide left arrow on first load since we're on the first page
+  prevBtn.style.display = 'none';
+</script>
+</body>
+</html>
